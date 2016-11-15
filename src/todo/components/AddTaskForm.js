@@ -1,14 +1,18 @@
 import React from 'react';
 
+import UserSelectorInput from './UserSelectorInput';
+
 class AddTaskForm extends React.Component {
   constructor() {
     super();
-    this.state = {
-      task: {
-        title: '',
-        completed: false,
-      },
+    this.baseTask = {
+      key: '',
+      title: '',
+      completed: false,
+      assignedUsers: [],
     };
+
+    this.state = { task: this.baseTask };
     this.submitForm = this.submitForm.bind(this);
   }
 
@@ -19,25 +23,35 @@ class AddTaskForm extends React.Component {
       this.props.onSubmit(this.state.task);
     }
 
-    this.setState({
-      task: {
-        title: '',
-        completed: false,
-      },
-    });
+    this.setState({ task: this.baseTask });
   }
 
   render() {
     return (
       <div>
-        <h1>Add Task</h1>
         <form onSubmit={this.submitForm}>
           <input
-            type="text" value={this.state.task.title} onChange={(event) => {
+            type="text"
+            placeholder="Add Task"
+            value={this.state.task.title}
+            onChange={(event) => {
               this.setState({
                 task: {
                   ...this.state.task,
                   title: event.target.value,
+                },
+              });
+            }}
+          />
+          <UserSelectorInput
+            users={this.state.task.assignedUsers}
+            suggestions={['Lukas']}
+            onChange={(users) => {
+              console.info(users);
+              this.setState({
+                task: {
+                  ...this.state.task,
+                  assignedUsers: users,
                 },
               });
             }}

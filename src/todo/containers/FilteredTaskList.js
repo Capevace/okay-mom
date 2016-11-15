@@ -8,8 +8,8 @@ import Task from '../components/Task';
 function FilteredTaskList({ tasks, toggleTaskComplete, removeTaskAction }) {
   return (
     <ul>
-      {tasks.map((task, index) =>
-        <li key={index}>
+      {tasks.map(task =>
+        <li key={task.key}>
           <Task
             task={task}
             onToggleComplete={() => {
