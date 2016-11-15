@@ -1,10 +1,12 @@
 import firebase from '../../firebase';
 import store from '../../store';
 
+export function logout() {
+
+}
+
 export function login(email, password) {
-  console.log('please login...');
   return (dispatch) => {
-    console.log('please login...');
     dispatch({ type: 'REQUEST_LOGIN' });
 
     const asyncAlert = message => setTimeout(() => {
@@ -41,6 +43,5 @@ export function login(email, password) {
 firebase
   .auth()
   .onAuthStateChanged((user) => {
-    console.info(store);
     store.dispatch({ type: 'UPDATE_LOGIN_STATUS', user });
   });

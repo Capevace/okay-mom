@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Match, Miss, Redirect } from 'react-router';
+import { Match, Miss } from 'react-router';
 
 import TasksView from './todo/containers/TasksView';
 import AuthView from './auth/containers/AuthView';
 
 class App extends Component {
+  componentWillMount() {
+
+  }
+
   render() {
     return (
       <div>
@@ -26,11 +30,10 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log('State update in App:', state);
-  return {
-    loggedIn: state.auth.loggedIn,
-  };
-};
+const mapStateToProps = state =>
+   ({
+     loggedIn: state.auth.loggedIn,
+   })
+;
 
 export default connect(mapStateToProps)(App);

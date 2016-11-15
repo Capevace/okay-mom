@@ -1,4 +1,4 @@
-import * as taskSource from '../taskSource';
+import taskSource from '../taskSource';
 
 // firebase.database().ref(`posts/${postId}/starCount`);
 // starCountRef.on('value', (snapshot) => {
@@ -12,14 +12,54 @@ export function onLoadedTasks(tasks) {
   };
 }
 
-export function onAddedTodoEntry(task) {
+export function onTaskAdded(task) {
+  return {
+    type: 'ADDED_TASK',
+    task,
+  };
+}
 
+export function onTaskChanged(task) {
+  return {
+    type: 'CHANGED_TASK',
+    task,
+  };
+}
+
+export function onTaskRemoved(task) {
+  return {
+    type: 'REMOVED_TASK',
+    task,
+  };
 }
 
 export function addTask(task) {
-  return (dispatch) => {
-    taskSource.push(task)
-      .then(() => dispatch());
+  return () => {
+    taskSource
+      .push(task)
+      .catch((err) => {
+        console.error('Unhandled error fetching tasks, prick.', err);
+      });
+  };
+}
+
+export function updateTask(task) {
+  return () => {
+    taskSource
+      .update(task)
+      .catch((err) => {
+        console.error('Unhandled error updating task, prick.', err);
+      });
+  };
+}
+
+export function removeTask(task) {
+  return () => {
+    taskSource
+      .remove(task)
+      .catch((err) => {
+        console.error('Unhandled error removing task, prick.', err);
+      });
   };
 }
 
@@ -27,7 +67,7 @@ export function loadTasks() {
   return (dispatch, getState) => {
     const { auth } = getState();
     if (auth.loggedIn) {
-      taskSource.subscribe(dispatch);
+      taskSource.subscribe(dispatch, `tasks/${auth.user.uid}`);
     }
   };
 }
