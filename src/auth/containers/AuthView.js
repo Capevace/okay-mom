@@ -14,6 +14,10 @@ function AuthView({ loginAction }) {
   );
 }
 
+AuthView.propTypes = {
+  loginAction: React.PropTypes.func.isRequired,
+};
+
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({

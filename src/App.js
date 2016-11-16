@@ -5,6 +5,8 @@ import { Match, Miss } from 'react-router';
 import TasksView from './todo/containers/TasksView';
 import AuthView from './auth/containers/AuthView';
 
+import SideBar from './general/containers/SideBar';
+
 class App extends Component {
   componentWillMount() {
 
@@ -13,27 +15,31 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Match
-          exactly
-          pattern="/"
-          render={() => // eslint-disable-line no-confusing-arrow
+        <SideBar>
+          <Match
+            exactly
+            pattern="/"
+            render={() => // eslint-disable-line no-confusing-arrow
             this.props.loggedIn
               ? <TasksView />
               : <AuthView />
           }
-        />
-        <Miss
-          component={() => <div>No match</div>}
-        />
+          />
+          <Miss
+            component={() => <div>No match</div>}
+          />
+        </SideBar>
       </div>
     );
   }
 }
 
-const mapStateToProps = state =>
-   ({
-     loggedIn: state.auth.loggedIn,
-   })
-;
+App.propTypes = {
+  loggedIn: React.PropTypes.bool,
+};
+
+const mapStateToProps = state => ({
+  loggedIn: state.auth.loggedIn,
+});
 
 export default connect(mapStateToProps)(App);

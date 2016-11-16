@@ -1,23 +1,11 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Match, Miss, Redirect } from 'react-router';
-import { loadTasks, unloadTasks, addTask } from '../actions/taskActions';
-import FilteredTaskList from './FilteredTaskList';
-import AddTaskForm from '../components/AddTaskForm';
+// import { Match, Miss, Redirect } from 'react-router';
 
-// const List = () => (
-//   <div>
-//     <h1>Tasks</h1>
-//     <FilteredTaskList />
-//   </div>
-// );
-//
-// const Add = () => (
-//   <div>
-//     <h1>Add Task</h1>
-//     <AddTaskForm />
-//   </div>
-// );
+import { loadTasks, unloadTasks, addTask, updateTask, removeTask } from '../actions/taskActions';
+import Header from '../../general/containers/Header';
+import FilteredTaskList from '../components/FilteredTaskList';
+import AddTaskForm from '../components/AddTaskForm';
 
 class TasksView extends React.Component {
   componentWillMount() {
@@ -30,20 +18,43 @@ class TasksView extends React.Component {
 
   render() {
     return (
-      <div id="task-view">
-        <h1>Tasks</h1>
+      <div>
+        <Header title="Your Tasks" />
         <AddTaskForm onSubmit={this.props.addTask} />
-        <FilteredTaskList />
+        <FilteredTaskList
+          tasks={this.props.tasks}
+          filter="ALL"
+          toggleTaskComplete={this.props.toggleTaskComplete}
+          removeTask={this.props.removeTaskAction}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = () => ({});
+TasksView.propTypes = {
+  loadTasks: PropTypes.func.isRequired,
+  unloadTasks: PropTypes.func.isRequired,
+  addTask: PropTypes.func.isRequired,
+  toggleTaskComplete: PropTypes.func.isRequired,
+  removeTaskAction: PropTypes.func.isRequired,
+  tasks: PropTypes.arrayOf(PropTypes.object),
+};
+
+const mapStateToProps = state => ({
+  tasks: state.tasks,
+});
+
 const mapDispatchToProps = dispatch => ({
   loadTasks: () => dispatch(loadTasks()),
   unloadTasks: () => dispatch(unloadTasks()),
+  removeTaskAction: task => dispatch(removeTask(task)),
   addTask: task => dispatch(addTask(task)),
+  toggleTaskComplete: task =>
+    dispatch(updateTask({
+      ...task,
+      completed: !task.completed,
+    })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TasksView);
