@@ -1,6 +1,12 @@
 import React from 'react';
 
-function Task({ task: { title, completed }, onToggleComplete, onRemove }) {
+function Task({ task, onToggleComplete, onRemove }) {
+  console.log(task);
+  const completedBy = task.completedBy;
+  const owner = task.owner;
+  const title = task.title;
+  const completedForCurrentUser = completedBy.includes(owner);
+
   return (
     <div
       className="task"
@@ -34,7 +40,7 @@ function Task({ task: { title, completed }, onToggleComplete, onRemove }) {
           }}
           onClick={onToggleComplete}
         >
-          {completed ? '✓' : ' '.replace(/ /g, '\u00a0')}
+          {completedForCurrentUser ? '✓' : ' '.replace(/ /g, '\u00a0')}
         </button>
       </div>
 
@@ -53,7 +59,7 @@ function Task({ task: { title, completed }, onToggleComplete, onRemove }) {
         <span
           className="title"
           style={{
-            textDecoration: completed ? 'line-through' : 'none',
+            textDecoration: completedForCurrentUser ? 'line-through' : 'none',
           }}
         >
           {title}

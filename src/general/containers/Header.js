@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import PageTitle from '../components/PageTitle';
 
-function Header({ title, toggleSidebar }) {
+function Header({ title, toggleSidebar, RightButtonComponent, rightButtonProps }) {
   return (
     <div
       style={{
@@ -38,6 +38,24 @@ function Header({ title, toggleSidebar }) {
         {title}
         <PageTitle title={title} />
       </h2>
+
+      {RightButtonComponent &&
+        <RightButtonComponent
+          buttonStyle={{
+            position: 'absolute',
+            height: '50px',
+            width: '50px',
+            border: 'none',
+            outline: 'none',
+            fontSize: '1.2rem',
+            background: 'lightblue',
+            textAlign: 'center',
+            right: '0px',
+          }}
+
+          {...rightButtonProps}
+        />
+      }
     </div>
   );
 }
@@ -45,7 +63,11 @@ function Header({ title, toggleSidebar }) {
 Header.propTypes = {
   title: React.PropTypes.string.isRequired,
   toggleSidebar: React.PropTypes.func.isRequired,
-
+  rightButtonProps: React.PropTypes.arrayOf(React.PropTypes.object),
+  RightButtonComponent: React.PropTypes.oneOf([
+    React.PropTypes.element,
+    React.PropTypes.func,
+  ]),
 };
 
 const mapStateToProps = state => ({

@@ -1,0 +1,24 @@
+[class*=icono-], [class*=icono-] * {
+    box-sizing: border-box;
+}
+[class*=icono-] {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    font-style: normal;
+    text-align: left;
+    text-indent: -9999px;
+    direction: ltr;
+}
+
+.icono-filter {
+    width: 0;
+    height: 0;
+    border: 10px solid;
+    border-bottom: none;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    padding: 3px;
+    box-shadow: inset 0 7px;
+    margin: 9px 4px;
+}

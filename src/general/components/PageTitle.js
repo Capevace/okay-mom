@@ -13,7 +13,7 @@ class PageTitle extends Component {
 }
 
 PageTitle.propTypes = {
-  children: PropTypes.children,
+  children: PropTypes.element,
 };
 
 function reducePropsToState(propsList) {
