@@ -1,9 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { style } from 'glamor';
+
+import { logout } from '../../auth/actions/authActions';
+import FamilyLinkList from '../../families/components/FamilyLinkList';
+
+const sectionHeadingStyle = style({
+  fontSize: '15px',
+});
 
 const sidebarWidth = '250px';
 
-function SideBar({ children, sidebarActive, toggleSidebar }) {
+function SideBar({
+  children,
+  sidebarActive,
+  toggleSidebar,
+  familyObjects,
+  loadingInitialFamilies,
+}) {
   return (
     <div>
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
@@ -20,6 +34,7 @@ function SideBar({ children, sidebarActive, toggleSidebar }) {
           opacity: sidebarActive ? 0.6 : 0,
           transition: 'opacity 300ms ease',
           willChange: 'opacity',
+          overflow: 'hidden',
         }}
         onClick={toggleSidebar}
       />
@@ -38,20 +53,10 @@ function SideBar({ children, sidebarActive, toggleSidebar }) {
         }}
       >
         <h1>OkayMom</h1>
-        <ul>
-          <li>
-            something
-          </li>
-          <li>
-            something
-          </li>
-          <li>
-            something
-          </li>
-          <li>
-            something
-          </li>
-        </ul>
+        <span {...sectionHeadingStyle}>Tasks</span>
+        <FamilyLinkList familyObjects={familyObjects} />
+        <hr />
+        <button onClick={logout}>Logout</button>
       </div>
       <div
         className="main"
@@ -72,10 +77,14 @@ SideBar.propTypes = {
   children: React.PropTypes.node,
   sidebarActive: React.PropTypes.bool,
   toggleSidebar: React.PropTypes.func.isRequired,
+  familyObjects: React.PropTypes.shape({}),
+  loadingInitialFamilies: React.PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   sidebarActive: state.page.sidebarActive,
+  familyObjects: state.families.familyObjects,
+  loadingInitialFamilies: state.families.loadingInitialFamilies,
 });
 
 const mapDispatchToProps = dispatch => ({

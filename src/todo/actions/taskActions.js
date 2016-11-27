@@ -1,4 +1,4 @@
-import taskSource from '../taskSource';
+import TaskSource from '../TaskSource';
 import { sanitizeTask } from '../baseTask';
 // firebase.database().ref(`posts/${postId}/starCount`);
 // starCountRef.on('value', (snapshot) => {
@@ -7,28 +7,28 @@ import { sanitizeTask } from '../baseTask';
 
 export function onLoadedTasks(tasks = []) {
   return {
-    type: 'LOADED_TASKS',
+    type: 'TASKS_LOADED',
     tasks: tasks.map(task => sanitizeTask(task)),
   };
 }
 
 export function onTaskAdded(task) {
   return {
-    type: 'ADDED_TASK',
+    type: 'TASK_ADDED',
     task: sanitizeTask(task),
   };
 }
 
 export function onTaskChanged(task) {
   return {
-    type: 'CHANGED_TASK',
+    type: 'TASK_CHANGED',
     task: sanitizeTask(task),
   };
 }
 
 export function onTaskRemoved(task) {
   return {
-    type: 'REMOVED_TASK',
+    type: 'TASK_REMOVED',
     task: sanitizeTask(task),
   };
 }

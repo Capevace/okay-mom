@@ -10,7 +10,7 @@ function Header({ title, toggleSidebar, RightButtonComponent, rightButtonProps }
         display: 'flex',
         position: 'relative',
         height: '50px',
-        background: 'blue',
+        background: 'transparent',
       }}
     >
       <button
@@ -22,7 +22,7 @@ function Header({ title, toggleSidebar, RightButtonComponent, rightButtonProps }
           border: 'none',
           outline: 'none',
           fontSize: '1.2rem',
-          background: 'lightblue',
+          background: 'transparent',
           textAlign: 'center',
         }}
       >
@@ -48,7 +48,7 @@ function Header({ title, toggleSidebar, RightButtonComponent, rightButtonProps }
             border: 'none',
             outline: 'none',
             fontSize: '1.2rem',
-            background: 'lightblue',
+            background: 'transparent',
             textAlign: 'center',
             right: '0px',
           }}
@@ -63,7 +63,7 @@ function Header({ title, toggleSidebar, RightButtonComponent, rightButtonProps }
 Header.propTypes = {
   title: React.PropTypes.string.isRequired,
   toggleSidebar: React.PropTypes.func.isRequired,
-  rightButtonProps: React.PropTypes.arrayOf(React.PropTypes.object),
+  rightButtonProps: React.PropTypes.shape({}),
   RightButtonComponent: React.PropTypes.oneOf([
     React.PropTypes.element,
     React.PropTypes.func,

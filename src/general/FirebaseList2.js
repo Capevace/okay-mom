@@ -2,7 +2,7 @@ import firebase from '../firebase';
 
 const firebaseDb = firebase.database();
 
-const parseSnapshot = snapshot =>
+const defaultParseSnapshot = snapshot =>
   snapshot.key
     ? ({ ...snapshot.val(), key: snapshot.key })
     : false;
@@ -15,7 +15,15 @@ class FirebaseList {
     this.basePath = null;
   }
 
-  subscribe(dispatch, basePath) {
+  parseSnapshot(snapshot) {
+    if (this.actions.parseSnapshot) {
+      return this.actions.parseSnapshot(snapshot);
+    }
+
+    return defaultParseSnapshot(snapshot);
+  }
+
+  subscribe(basePath) {
     if (this.isSubscribed) {
       this.unsubscribe();
     }
@@ -26,37 +34,36 @@ class FirebaseList {
     let initialized = false;
     let children = []; // eslint-disable-line prefer-const
 
-    ref.once('value', () => {
+    ref.once('value', (value) => {
       initialized = true;
-      dispatch(this.actions.onValuesLoaded(children));
+      this.actions.onValuesLoaded(children);
     });
 
     ref.on('child_added', (snapshot) => {
-      const child = parseSnapshot(snapshot);
-
+      const child = this.parseSnapshot(snapshot);
       if (!child) return;
 
       if (initialized) {
-        dispatch(this.actions.onValueAdded(child));
+        this.actions.onValueAdded(child);
       } else {
         children.push(child);
       }
     });
 
     ref.on('child_changed', (snapshot) => {
-      const child = parseSnapshot(snapshot);
+      const child = this.parseSnapshot(snapshot);
 
       if (!child) return;
 
-      dispatch(this.actions.onValueChanged(child));
+      this.actions.onValueChanged(child);
     });
 
     ref.on('child_removed', (snapshot) => {
-      const child = parseSnapshot(snapshot);
+      const child = this.parseSnapshot(snapshot);
 
       if (!child) return;
 
-      dispatch(this.actions.onValueRemoved(child));
+      this.actions.onValueRemoved(child);
     });
 
     this.isSubscribed = true;

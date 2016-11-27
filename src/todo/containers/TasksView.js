@@ -4,78 +4,9 @@ import { connect } from 'react-redux';
 
 import { loadTasks, unloadTasks, addTask, updateTask, removeTask } from '../actions/taskActions';
 import Header from '../../general/containers/Header';
+import FilterHeaderButton from '../../general/components/FilterHeaderButton';
 import FilteredTaskList from '../components/FilteredTaskList';
 import AddTaskForm from '../components/AddTaskForm';
-import Icon from '../../general/components/Icon';
-
-class FilterHeaderButton extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      showSelector: false,
-    };
-
-    this.toggleSelector = this.toggleSelector.bind(this);
-  }
-
-  toggleSelector() {
-    this.setState({
-      showSelector: !this.state.showSelector,
-    });
-  }
-
-  render() {
-    return (
-      <div
-        style={{
-          ...this.props.buttonStyle,
-          position: 'relative',
-        }}
-      >
-
-        <button
-          onClick={this.toggleSelector}
-          style={{
-            ...this.props.buttonStyle,
-            position: 'relative',
-          }}
-        >
-          <Icon icon="filter" />
-        </button>
-
-        {this.state.showSelector &&
-          <div
-            style={{
-              position: 'absolute',
-              right: '0px',
-              padding: '20px 20px 20px 10px',
-              minWidth: '150px',
-              background: 'lightblue',
-            }}
-          >
-            <ul style={{ margin: 0 }}>
-              {this.props.filters.map(({ name, value }, index) => (
-                <li
-                  style={{ margin: 0 }}
-                  key={index}
-                >
-                  <button
-                    onClick={() => {
-                      this.props.filterChanged(value);
-                      this.toggleSelector();
-                    }}
-                  >
-                    {name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        }
-      </div>
-    );
-  }
-}
 
 class TasksView extends React.Component { // eslint-disable-line react/no-multi-comp
   constructor() {
@@ -131,6 +62,7 @@ class TasksView extends React.Component { // eslint-disable-line react/no-multi-
         <FilteredTaskList
           tasks={this.props.tasks}
           filter={this.state.filter}
+          activeUser={this.props.currentUserId}
           toggleTaskComplete={(task) => {
             this.props.toggleTaskComplete(task, this.props.currentUserId);
           }}
@@ -162,18 +94,11 @@ const mapDispatchToProps = dispatch => ({
   removeTaskAction: task => dispatch(removeTask(task)),
   addTask: task => dispatch(addTask(task)),
   toggleTaskComplete: (task, userId) => {
-    console.log('lol', task, userId);
     const updatedTask = task;
-
-    console.log(updatedTask.completedBy);
-
-    if (!task.completedBy.includes(userId)) {
-      updatedTask.completedBy.push(userId);
-    } else {
-      updatedTask.completedBy = updatedTask.completedBy.filter(user => user !== userId);
-    }
-
-    console.log(updatedTask.completedBy);
+    updatedTask.completedBy =
+      (task.completedBy.includes(userId))
+        ? task.completedBy.filter(user => user !== userId)
+        : [...task.completedBy, userId];
 
     dispatch(updateTask(updatedTask));
   },

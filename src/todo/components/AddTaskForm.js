@@ -1,7 +1,43 @@
 import React from 'react';
+import { style, placeholder, merge } from 'glamor';
 
 import { baseTask } from '../baseTask';
 import UserSelectorInput from './UserSelectorInput';
+
+const formStyle = style({
+  height: '75px',
+  width: '100%',
+  boxSizing: 'border-box',
+  paddingTop: '15px',
+});
+
+const inputStyle = merge(
+  style({
+    display: 'block',
+    height: '40px',
+    margin: 'auto',
+    maxWidth: '300px',
+    textAlign: 'center',
+    fontSize: '20px',
+    width: '350px',
+    // '@media (max-width: 349px)': {
+    //   width: '100%',
+    // },
+    border: 'none',
+    borderBottom: '2px solid rgba(169, 169, 169, 0.6)',
+    transition: 'border-bottom-color 300ms ease',
+    outline: 'none',
+    // ':focus': {
+    //   borderBottomColor: 'rgba(169, 169, 169, 1)',
+    // },
+    background: 'rgba(138, 80, 102, 0.26)',
+    color: 'white',
+  }),
+  placeholder({
+    color: 'white',
+    opacity: 0.7,
+  }),
+);
 
 class AddTaskForm extends React.Component {
   constructor() {
@@ -25,11 +61,10 @@ class AddTaskForm extends React.Component {
     return (
       <form
         onSubmit={this.submitForm}
-        style={{
-          textAlign: 'center',
-        }}
+        {...formStyle}
       >
         <input
+          {...inputStyle}
           type="text"
           placeholder="Add Task"
           value={this.state.task.title}

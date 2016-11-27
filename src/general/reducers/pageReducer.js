@@ -1,4 +1,4 @@
-function page(state = { title: 'OkayMom', sidebarActive: false }, action) {
+function pageReducer(state = { title: 'OkayMom', sidebarActive: false }, action) {
   switch (action.type) {
     case 'CHANGE_PAGE_TITLE':
       return {
@@ -15,4 +15,4 @@ function page(state = { title: 'OkayMom', sidebarActive: false }, action) {
   }
 }
 
-export default page;
+export default pageReducer;

@@ -2,3 +2,5 @@
 - array.filter
 - array.reduce
 - array.includes
+- array.forEach
+- object.keys
