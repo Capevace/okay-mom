@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Header from '../../general/containers/Header';
 import FirebaseList from '../../general/FirebaseList2';
+import Header from '../../general/containers/Header';
+import TaskList from '../../tasks/components/TaskList';
 
 class FamilyRoute extends React.Component {
   constructor(props) {
@@ -14,13 +15,11 @@ class FamilyRoute extends React.Component {
 
     this.familyTaskSource = new FirebaseList({
       onValuesLoaded: (values) => {
-        console.info('hadd');
         this.setState({
           tasks: values,
         });
       },
       onValueAdded: (value) => {
-        console.info('had');
         this.setState({
           tasks: [
             ...this.state.tasks,
@@ -59,13 +58,19 @@ class FamilyRoute extends React.Component {
         <Header
           title={!loadingInitialFamilies && family ? `${family.familyData.name} - Overview` : 'Loading family...'}
         />
-        {/* {this.props.family.key} */}
-        Something
-        {JSON.stringify(this.state.tasks)}
+        <TaskList tasks={this.state.tasks} />
       </div>
     );
   }
 }
+
+FamilyRoute.propTypes = {
+  family: React.PropTypes.shape({
+    key: React.PropTypes.string,
+    familyData: React.PropTypes.shape({}),
+  }).isRequired,
+  loadingInitialFamilies: React.PropTypes.bool,
+};
 
 const mapStateToProps = (state, props) => ({
   loadingInitialFamilies: state.families.loadingInitialFamilies,

@@ -7,6 +7,6 @@ body {
   padding: 0;
   font-family: sans-serif;
   overflow: hidden;
-  background-image: linear-gradient(to bottom right, #ec9398, #b960d0 );
+  /*background-image: linear-gradient(to bottom right, #ec9398, #b960d0 );*/
   height: 100%;
 }

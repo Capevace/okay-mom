@@ -20,7 +20,6 @@ const MatchWhenAuthorized = ({ component: Component, authorized, ...rest }) => (
         //   }}
         // />
         <AuthView />
-
       )
     )}
   />
@@ -40,7 +39,7 @@ class App extends React.Component {
             exactly
             authorized={this.props.loggedIn}
             pattern="/"
-            render={() => <div>Hello!</div>}
+            component={() => <div>Hello!</div>}
           />
 
           <MatchWhenAuthorized
